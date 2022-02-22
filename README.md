@@ -1,7 +1,7 @@
 # SchoolProjects
 For small projects done at school.  
 The codes were part of the group works done during the courses.  
-Mainly done with Raspberry Pi and some simple sensor.  
+Mainly done with Raspberry Pi and some simple sensors.  
 Used Python programming language.
 
 ## Azure Temp Sensor
