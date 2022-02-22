@@ -1,0 +1,50 @@
+from gpiozero import LED
+import grove.adc_8chan_12bit as g
+import time
+
+'''
+Tehdään muuttujista globaaleja.
+------------------
+Punainen led = pled
+Sininen led = sled
+------------------
+Määrätään ledeille GPIO pinnit 13 ja 17,
+ja määrätään analogipiirillille muuttujat
+jotta saadaan luettua piirin jännite millivoltteina.
+'''
+global pled
+global sled
+global adc
+
+pled = LED(13) # led GPIO 13, pinnissä 33
+sled = LED(17) # led GPIO 17, pinnissä 11
+adc = g.Pi_hat_adc()
+
+'''
+Alustetaan raja-arvo, jotta hälytys saadaan toimimaan
+ja käynnistetään pääohjelman looppi.
+'''
+rajaAkt = int (input ("Anna raja aktivoinnille: "))
+rajaHal = int (input ("Anna raja hälytykselle: "))
+Loop = True
+
+'''
+Pääohjelma silmukka, jossa haetaan kortilta jännite,
+ja tarkistetaan jännitteen arvo. Riippuen arvosta
+laitetaan päälle tietty led
+'''
+while Loop == True:
+    #Haetaan jännite millivoltteina
+    volt = adc.get_nchan_vol_milli_data(0)
+    print(volt)
+    #Tarkistetaan onko raja rikottu
+    if volt >= rajaAkt and volt < rajaHal:
+        pled.off()
+        sled.on()
+    if volt >= rajaHal:
+        sled.off()
+        pled.on()
+    elif volt < rajaAkt:
+        sled.off()
+        pled.off()
+    time.sleep(1)
